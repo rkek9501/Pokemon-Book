@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  position: relative;
+}
+body > #root > h1 {
+  height: 40px;
+  text-align: center;
+}
+
+.pokemon-list {
+  display: inline-block;
+  padding: 10px;
+  overflow: scroll;
+  height: calc(100vh - 40px);
+}
+.pokemon-block {
+  display: inline-block;
+  flex-direction: column;
+  min-height: 160px;
+  width: 120px;
+  padding-top: 4px;
+  border: solid 1px lightgray;
+  margin: 10px;
+  vertical-align: top;
+  text-decoration: none;
+  color: black;
+}
+.pokemon-block:hover {
+  border: solid 1px black;
+}
+.pokemon-block > img {
+  width: 120px;
+  height: 120px;
+}
+
+.pokemon-num {
+  text-align: start;
+  padding: 0 6px;
+  font-size: small;
+}
+.pokemon-name {
+  text-align: center;
+  font-size: medium;
+  height: 40px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+.length {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.none {
+  visibility: hidden;
+}
