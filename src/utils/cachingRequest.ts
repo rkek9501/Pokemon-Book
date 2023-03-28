@@ -1,22 +1,42 @@
 const CacheName = 'pokemon';
 
-if (window) {
-  window?.caches.open(CacheName).then(cache => {
-    cache.keys().then((urls) => {
-      console.log(urls);
-    });
-    console.log("open cache");
-  });
-}
-
+/**
+ * Cache api 활용한 fetch 캐시 처리
+ * Cache api: https://developer.mozilla.org/en-US/docs/Web/API/Cache
+ * @param url 
+ * @returns 
+ */
 const cachingRequest = async (url: string) => {
-  return await fetch(url)
-    .then((res) => {
-      caches.open(CacheName).then(cache => {
-        return cache.add(url);
+  try {
+    return await caches.open(CacheName).then(async cache => {
+      // 캐시 조회
+      const cached = await cache.match(url).then(res => {
+        if (!res?.ok) {
+          // throw Error("Cannot Find Cached Data!");
+          return null;
+        }
+        const json = res?.json();
+        return json;
       });
-      return res.json();
+
+      // 존재하는 캐시있으면 리턴
+      if (cached) return cached;
+
+      // 캐시 없으면 fetch
+      const res = await fetch(url).then(res => {
+        if (!res?.ok) {
+          console.log("error!!", {res})
+          // throw Error("Cannot Find Cached Data!");
+          return null;
+        }
+        cache.put(url, res);
+        return res.json();
+      });
+      return res;
     });
+  } catch (error) {
+    return null;
+  }
 };
 
 export default cachingRequest;
