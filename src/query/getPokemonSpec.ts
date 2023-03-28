@@ -20,7 +20,7 @@ query getPokemon($id: Int!) {
         }
       }
       pokemon_v2_evolutionchain {
-        pokemon_v2_pokemonspecies(order_by: { id: asc }) {
+        pokemon_v2_pokemonspecies(order_by: { order: asc }) {
           id
           name
           pokemon_v2_pokemonspeciesnames(where: {pokemon_v2_language: {name: {_eq: "ko"}}}) {
