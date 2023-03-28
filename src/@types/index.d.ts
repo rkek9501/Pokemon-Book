@@ -1,7 +1,7 @@
 declare type Pokemon = {
   id: number;
   name: string;
-  img: string;
+  koName: string;
 };
 
 declare type PokemonSpec = {

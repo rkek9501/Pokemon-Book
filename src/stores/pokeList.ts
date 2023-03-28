@@ -1,16 +1,13 @@
 import { atom } from 'recoil';
 
-export const PokemonPageState = atom<number>({
-  key: 'PokemonPage',
-  default: 1,
-});
+type LoadingState = "init" | "load" | "finish";
 
-export const PokemonLoadingState = atom<boolean>({
+export const PokemonLoadingState = atom<LoadingState>({
   key: 'PokemonLoading',
-  default: false,
+  default: "init",
 });
 
-export const PokemonListState = atom<Pokemon[]>({
+export const PokemonListStore = atom<Pokemon[]>({
   key: 'PokemonList',
   default: [],
 });

@@ -1,3 +1,7 @@
+/**
+ * TODO: Deprecated 됨 추후 제거 예정
+ */
+
 const CacheName = 'pokemon';
 
 /**

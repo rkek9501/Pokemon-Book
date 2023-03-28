@@ -1,6 +1,10 @@
+/**
+ * TODO: Deprecated 됨 추후 제거 예정
+ */
+
+import { POKEMONS_OFFSET, POKE_API_BASE_URL, POKE_IMG_BASE_URL } from "src/const";
 import cachingRequest from "./cachingRequest";
 
-const LIMIT = 20;
 type IdOrName = string | number | null;
 
 /**
@@ -9,13 +13,10 @@ type IdOrName = string | number | null;
  * @returns 
  */
 export const getPokeList = async (page: number) => {
-  const url = `https://pokeapi.co/api/v2/pokemon?limit=${LIMIT}&offset=${(page-1) * LIMIT}`;
+  const url = `${POKE_API_BASE_URL}/pokemon?limit=${POKEMONS_OFFSET}&offset=${(page-1) * POKEMONS_OFFSET}`;
   const response = await cachingRequest(url);
 
-  if (response?.results?.length > 0) {
-    return response?.results;
-  }
-  return [];
+  return response || [];
 };
 
 /**
@@ -55,23 +56,19 @@ const parseEvolutionChain: any = (evolution: any) => {
 export const getPokemonSpec = async (idOrName: IdOrName) => {
   if (!idOrName) return null;
 
-  // 기본 정보 조회
-  const url = `https://pokeapi.co/api/v2/pokemon/${idOrName}`;
-  const pokemon = await cachingRequest(url);
-  const id = pokemon.id; // 포켓몬 id
-  const src = pokemon?.sprites?.front_shiny; // 포켓몬 이미지 경로
-
   // 스펙 조회
-  const specUrl = `https://pokeapi.co/api/v2/pokemon-species/${idOrName}`;
+  const specUrl = `${POKE_API_BASE_URL}/pokemon-species/${idOrName}`;
   const spec = await cachingRequest(specUrl);
   if (!spec) {
-    return { id, src, name: idOrName, genus: "", flavor_text: "", evolutionUrl: "" };
+    return { id: 0, src: "", name: idOrName, genus: "", flavor_text: "", evolutionUrl: null };
   }
 
+  const id = spec?.id;
   const name = getKoText("name", spec?.names) || idOrName; // 이름
   const genus = getKoText("genus", spec.genera); // 분류
   const flavor_text = getKoText("flavor_text", spec.flavor_text_entries); // 설명
   const evolutionUrl = spec?.evolution_chain?.url; // 진화 관련 URL
+  const src = `${POKE_IMG_BASE_URL}/${id}.png`;
 
   return { id, src, genus, name, flavor_text, evolutionUrl };
 };
