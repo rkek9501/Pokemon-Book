@@ -7,6 +7,11 @@ type PokeListProps = {
   withLoader?: boolean;
 };
 
+/**
+ * 포켓몬 목록 컴포넌트
+ * @param Props 
+ * @returns 
+ */
 const PokeList = (Props: PokeListProps) => {
   const { list, withLoader } = Props;
   return (

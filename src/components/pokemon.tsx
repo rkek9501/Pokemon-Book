@@ -4,6 +4,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { parsePathQuery } from 'src/utils/parser';
 import { POKE_IMG_BASE_URL } from 'src/const';
 
+/**
+ * 포켓몬 카드
+ * @param Props 
+ * @returns 
+ */
 const Pokemon = (Props: Pokemon) => {
   const location = useLocation();
   const src = `${POKE_IMG_BASE_URL}/${Props.id}.png`;

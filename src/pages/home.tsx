@@ -1,22 +1,24 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useMemo } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useQuery } from '@apollo/client';
 
-import PokeList from "src/components/pokeList";
 import PokeListCounter from "src/components/pokeListCounter";
+import PokeList from "src/components/pokeList";
+import SearchBar from "src/components/searchbar";
+import SearchResult from "src/components/searchResult";
 import Layout from "src/containers/layout";
 
-import { PokemonListStore, PokemonLoadingState } from "src/stores/pokeList";
+import { PokemonListStore, PokemonLoadingState, PokemonSearchStore } from "src/stores/pokemon";
 import { paresPokemon } from "src/utils/parser";
 import { GET_LIST } from "src/query/getPokemonList";
 
-const Home = () => {
+const useHome = () => {
   const pokeList = useRecoilValue(PokemonListStore);
   const loading = useRecoilValue(PokemonLoadingState);
   const setPokeList = useSetRecoilState(PokemonListStore);
   const setLoading = useSetRecoilState(PokemonLoadingState);
 
-  const {refetch} = useQuery(GET_LIST, {
+  const { refetch } = useQuery(GET_LIST, {
     variables: { offset: 0 },
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-and-network",
@@ -27,23 +29,37 @@ const Home = () => {
       setPokeList((prev: Pokemon[]) => (prev).concat(...pokemons));
       setLoading("finish");
     },
+    onError(error) {
+      setLoading("finish");
+    }
   });
 
-  useLayoutEffect(() => {
-    refetch();
-  }, []);
-
-  useEffect(() => {
+  useEffect(() => { // 로딩 상태가 load일 경우 다음 offest 목록 조회
     if (loading === "load") {
       const offset = pokeList.length;
-      console.log({offset});
       refetch({offset});
     }
-}, [pokeList, loading]);
+  }, [pokeList, loading]);
+};
+
+const Home = () => {
+  const pokeList = useRecoilValue(PokemonListStore);
+  const searchValue = useRecoilValue(PokemonSearchStore);
+  useHome();
+
+  const hasSearchStr = useMemo(() => {
+    return searchValue?.trim()?.length > 0 && !isNaN(Number(searchValue?.trim()));
+  }, [searchValue])
 
   return (<Layout>
     <PokeListCounter count={pokeList?.length} />
-    <PokeList withLoader list={pokeList} />
+    <SearchBar />
+
+    {/* 검색 */}
+    {hasSearchStr
+      ? <SearchResult />
+      : <PokeList withLoader list={pokeList} />
+    }
   </Layout>);
 };
 

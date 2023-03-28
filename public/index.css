@@ -76,3 +76,9 @@ body > #root > h1 {
 .none {
   visibility: hidden;
 }
+
+input#search-input {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}

@@ -1,11 +1,24 @@
 import { POKE_IMG_BASE_URL } from "src/const";
 
+/**
+ * character 페이지에서 url의 query 파싱할 때 사용
+ * @param key 
+ * @param queryString 
+ * @returns 
+ */
 export const parsePathQuery = (key: string, queryString: string) => {
   const params = new URLSearchParams(queryString);
-  const pokemonName = params.get(key);
-  return pokemonName;
+  const value = params.get(key);
+  return value;
 };
 
+/**
+ * pokeapi Graphql로부터 조회된
+ * 포켓몬 가본정보 파싱
+ * - '/' (목록)
+ * @param poke 
+ * @returns 
+ */
 export const paresPokemon = (poke: any) => {
   const id = poke?.id;
   const name = poke?.name;
@@ -26,6 +39,14 @@ const paresEvolutionPokemon = (poke: any) => {
   return result;
 };
 
+/**
+ * pokeapi Graphql로부터 조회된
+ * 포켓몬 스펙 정보 파싱 
+ * - '/' (검색)
+ * - '/character'
+ * @param poke 
+ * @returns 
+ */
 export const paresPokemonSpec = (poke: any) => {
   const id = poke?.id;
   const name = poke?.name;

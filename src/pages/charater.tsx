@@ -5,20 +5,20 @@ import { useLazyQuery } from "@apollo/client";
 import Layout from "src/containers/layout";
 import PokeList from "src/components/pokeList";
 import { paresPokemonSpec, parsePathQuery } from "src/utils/parser";
-import { GET_POKEMON } from "src/query/getPokemonSpec";
+import { GET_POKEMON_SPEC } from "src/query/getPokemonSpec";
 
-const Character = () => {
+const useCharacter = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [{src, name, flavor_text, evolutions}, setSpecs] = useState<any>({ id: 0, src: "", name: "", flavor_text: "", evolutions: [] });
-  const [getPokemonById] = useLazyQuery(GET_POKEMON, {
+  const [{id, src, name, flavor_text, evolutions}, setSpecs] = useState<any>({ id: 0, src: "", name: "", flavor_text: "", evolutions: [] });
+  const [getPokemonById] = useLazyQuery(GET_POKEMON_SPEC, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-only",
     onCompleted(response) {
       if (response?.pokemon_v2_pokemon_by_pk) {
         const { id, name, koName, src, flavor_text, evolutions } = paresPokemonSpec(response?.pokemon_v2_pokemon_by_pk)
-        setSpecs({ src, name: koName, flavor_text, evolutions });
+        setSpecs({ id, src, name: koName, flavor_text, evolutions });
       } else {
         setError("포켓몬을 찾을 수 없습니다.");
       }
@@ -37,6 +37,19 @@ const Character = () => {
     getPokemonById({ variables: { id: pokemonId } });
   }, [location]);
 
+  return {
+    error,
+    loading,
+    data: {
+      id, src, name, flavor_text, evolutions
+    }
+  }
+}
+
+const Character = () => {
+  const { error, loading, data } = useCharacter();
+  const { id, src, name, flavor_text, evolutions } = data;
+  
   return (<Layout>
     {error
       ? <div className="center" style={{padding:20}}>{error}</div>

@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 
 /**
- * 포켓몬 상세 페이지
- * 포콋몬 상세정보(이름, 특징, 진화) 조회 쿼리
+ * 포켓몬 도감 목록에서 검색 시
+ * store에 저장된 아이디의 포켓몬이 없을 경우
+ * 하나의 포켓몬 검색을 위해 사용
  */
-export const GET_POKEMON_SPEC = gql`
+export const GET_POKEMON = gql`
 query getPokemon($id: Int!) {
   pokemon_v2_pokemon_by_pk(id: $id) {
     name
@@ -17,20 +18,6 @@ query getPokemon($id: Int!) {
         name
         pokemon_v2_language {
           name
-        }
-      }
-      pokemon_v2_evolutionchain {
-        pokemon_v2_pokemonspecies(order_by: { id: asc }) {
-          id
-          name
-          pokemon_v2_pokemonspeciesnames(where: {pokemon_v2_language: {name: {_eq: "ko"}}}) {
-            id
-            name
-            pokemon_v2_language {
-              name
-              id
-            }
-          }
         }
       }
       pokemon_v2_pokemonspeciesflavortexts(where: {pokemon_v2_language: {name: {_eq: "ko"}}}, distinct_on: language_id) {

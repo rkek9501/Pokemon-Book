@@ -1,8 +1,13 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { PokemonLoadingState } from "src/stores/pokeList";
+import { PokemonLoadingState } from "src/stores/pokemon";
 
+/**
+ * 메인화면 포켓몬 목록 마지막에 들어가는 컴포넌트
+ * 해당 컴포넌트가 브라우져 진입 여부에 따라 다음 포켓몬 목록 조회
+ * @returns 
+ */
 const Loader = () => {
   const loader = useRef<HTMLSpanElement>(null);
   const loading = useRecoilValue(PokemonLoadingState);
@@ -29,7 +34,7 @@ const Loader = () => {
   }, [handleObserver]);
 
   return (
-    <span key={0} className={`pokemon-block center ${!loading && "none"}`} ref={loader} >
+    <span className={`pokemon-block center ${loading==="finish" && "none"}`} ref={loader} >
       loading...
     </span>
   );
