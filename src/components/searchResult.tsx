@@ -1,22 +1,22 @@
-import React, { useLayoutEffect, useMemo } from "react";
-import { useRecoilValue } from "recoil";
+import React, { useLayoutEffect, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 import { useLazyQuery } from '@apollo/client';
 
-import Pokemon from "src/components/pokemon";
-import { PokemonSearchStore, userPokemonSelector } from "src/stores/pokemon";
-import { paresPokemonSpec } from "src/utils/parser";
-import { GET_POKEMON } from "src/query/getPokemon";
+import Pokemon from 'src/components/pokemon';
+import { PokemonSearchStore, userPokemonSelector } from 'src/stores/pokemon';
+import { paresPokemonSpec } from 'src/utils/parser';
+import { GET_POKEMON } from 'src/query/getPokemon';
 
 /**
  * 메인화면 검색 결과
- * @returns 
+ * @returns
  */
 const SearchResult = () => {
   const searchValue = useRecoilValue(PokemonSearchStore);
   const findedPokemon: Pokemon = useRecoilValue(userPokemonSelector);
   const [getPokemon, { loading, data, error }] = useLazyQuery(GET_POKEMON, {
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-and-network",
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-and-network'
   });
 
   const pokemon = useMemo(() => {
@@ -29,15 +29,17 @@ const SearchResult = () => {
   }, [searchValue, data, findedPokemon]);
 
   useLayoutEffect(() => {
-    if (!findedPokemon) getPokemon({ variables: { id: searchValue }});
+    if (!findedPokemon) getPokemon({ variables: { id: searchValue } });
   }, [searchValue, findedPokemon]);
 
-  if (loading) return <div className="center">Loading...</div>;
-  if ((error && !findedPokemon) || !pokemon) return <div className="center">포켓몬 정보가 존재하지 않습니다.</div>;  
+  if (loading) return <div className='center'>Loading...</div>;
+  if ((error && !findedPokemon) || !pokemon) return <div className='center'>포켓몬 정보가 존재하지 않습니다.</div>;
 
-  return <div className="center">
-    <Pokemon {...pokemon} />
-  </div>;
+  return (
+    <div className='center'>
+      <Pokemon {...pokemon} />
+    </div>
+  );
 };
 
 export default SearchResult;

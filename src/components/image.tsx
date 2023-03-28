@@ -1,9 +1,4 @@
-import React, { ReactElement, useLayoutEffect, ComponentProps } from "react";
-
-// type ImageProps = {
-//   src: string;
-//   alt?: string;
-// };
+import React, { useLayoutEffect } from 'react';
 
 const Img = (Props: any) => {
   useLayoutEffect(() => {
@@ -11,7 +6,7 @@ const Img = (Props: any) => {
     image.src = Props.src;
   }, []);
 
-  return <img {...Props}/>;
+  return <img {...Props} />;
 };
 
 export default Img;

@@ -11,7 +11,7 @@ type LoadingState = 'init' | 'load' | 'finish';
  */
 export const PokemonLoadingState = atom<LoadingState>({
   key: 'PokemonLoading',
-  default: 'init',
+  default: 'init'
 });
 
 /**
@@ -19,7 +19,7 @@ export const PokemonLoadingState = atom<LoadingState>({
  */
 export const PokemonListStore = atom<Pokemon[]>({
   key: 'PokemonList',
-  default: [],
+  default: []
 });
 
 /**
@@ -27,7 +27,7 @@ export const PokemonListStore = atom<Pokemon[]>({
  */
 export const PokemonSearchStore = atom<string>({
   key: 'PokemonSearch',
-  default: '',
+  default: ''
 });
 
 /**
