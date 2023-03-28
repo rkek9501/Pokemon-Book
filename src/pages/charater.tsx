@@ -6,6 +6,7 @@ import Layout from "src/containers/layout";
 import PokeList from "src/components/pokeList";
 import { paresPokemonSpec, parsePathQuery } from "src/utils/parser";
 import { GET_POKEMON_SPEC } from "src/query/getPokemonSpec";
+import Img from "src/components/image";
 
 const useCharacter = () => {
   const location = useLocation();
@@ -57,7 +58,7 @@ const Character = () => {
         ? <div className="center" style={{padding:20}}>Loading...</div>
         : <div className="center">
         <span>
-          <img src={src} alt={name} width={160} height={160} />
+          <Img src={src} alt={name} width={160} height={160} />
           <div>이름 : {name}</div>
           <div>설명 : {flavor_text}</div>
         </span>

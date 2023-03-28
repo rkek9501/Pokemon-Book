@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { parsePathQuery } from 'src/utils/parser';
 import { POKE_IMG_BASE_URL } from 'src/const';
+import Img from './image';
 
 /**
  * 포켓몬 카드
@@ -25,7 +26,7 @@ const Pokemon = (Props: Pokemon) => {
     >
       <div className="pokemon-num">{Props?.id}.</div>
       <div className="pokemon-name">{Props?.koName || Props?.name}</div>
-      <img src={src} alt={Props?.name} />
+      <Img src={src} alt={Props?.name} />
     </Link>
   );
 };
