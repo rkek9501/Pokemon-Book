@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 import PokeListCounter from "src/components/pokeListCounter";
 import PokeList from "src/components/pokeList";
@@ -18,8 +18,7 @@ const useHome = () => {
   const setPokeList = useSetRecoilState(PokemonListStore);
   const setLoading = useSetRecoilState(PokemonLoadingState);
 
-  const { refetch } = useQuery(GET_LIST, {
-    variables: { offset: 0 },
+  const [refetch] = useLazyQuery(GET_LIST, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-and-network",
     onCompleted(response) {
@@ -34,10 +33,14 @@ const useHome = () => {
     }
   });
 
+  useLayoutEffect(() => {
+    if (pokeList?.length === 0) refetch({ variables: { offset: 0 }});
+  }, []);
+
   useEffect(() => { // 로딩 상태가 load일 경우 다음 offest 목록 조회
     if (loading === "load") {
       const offset = pokeList.length;
-      refetch({offset});
+      refetch({ variables: { offset }});
     }
   }, [pokeList, loading]);
 };
