@@ -82,3 +82,8 @@ input#search-input {
   top: 20px;
   left: 20px;
 }
+
+.imagebox {
+  font-size: small;
+  padding: 10px;
+}
